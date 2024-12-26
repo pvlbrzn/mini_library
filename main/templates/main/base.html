@@ -11,7 +11,7 @@
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
-<header class="container py-3">
+<header class="container py-3 sticky-top bg-light">
     <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
         <a href="/" class="d-flex align-items-center link-body-emphasis text-decoration-none">
             <img src="{% static 'main/img/logo.svg' %}" width="40" height="32" class="me-2" viewBox="0 0 118 94"
@@ -21,12 +21,15 @@
 
         <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
             <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{% url 'home' %}">Главная страница</a>
-            <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{% url 'books' %}">Книги</a>
             {% if user.is_authenticated %}
-                <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{% url 'logout' %}">Выйти</a>
+                <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{% url 'books' %}">Книги</a>
+                <a class="me-3 py-1 btn btn-danger btn-lg" href="{% url 'logout' %}">Выйти</a>
+                {% if user.is_staff %}
+                    <a href="{% url 'after_login' %}" class="me-3 py-1 btn btn-primary btn-lg">Управление</a>
+                {% endif %}
             {% else %}
-                <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{% url 'login' %}">Войти</a>
-                <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{% url 'register' %}">Регистрация</a>
+                <a class="me-3 py-1 btn btn-primary btn-lg" href="{% url 'login' %}">Войти</a>
+                <a class="me-3 py-1 btn btn-secondary btn-lg" href="{% url 'register' %}">Регистрация</a>
                 {% endif %}
         </nav>
     </div>

@@ -2,15 +2,21 @@ from django.shortcuts import render, redirect
 from .models import Books
 from django.contrib.auth import login
 from .forms import CustomUserCreationForm
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
     return render(request, 'main/index.html')
 
 
+@login_required
 def books(request):
     books = Books.objects.all()
-    return render(request, 'main/books.html', {'title': 'Все книги', 'books': books})
+    context = {
+        'title': 'Все книги',
+        'books': books
+    }
+    return render(request, 'main/books.html', context=context)
 
 
 def register(request):
@@ -22,4 +28,15 @@ def register(request):
             return redirect('home')  # Перенаправление на главную страницу
     else:
         form = CustomUserCreationForm()
-    return render(request, 'main/register.html', {'form': form})
+        context = {
+            'form': form,
+            'title': 'Регистрация'
+        }
+    return render(request, 'main/register.html', context=context)
+
+
+@login_required
+def after_login_redirect(request):
+    if request.user.is_staff:
+        return redirect('/admin/')
+    return redirect('/')

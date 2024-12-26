@@ -9,26 +9,30 @@
     <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             {% if books %}
-                {% for el in books %}
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h4 class="card-text">{{el.title}}</h4>
-                            <p class="card-text">{{el.author}}</p>
-                            <p class="card-text">{{el.year}}</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                                </div>
-                                <small class="text-body-secondary">9 mins</small>
+            {% for el in books %}
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h4 class="card-text">{{el.title}}</h4>
+                        <p class="card-text">{{el.author}}</p>
+                        <p class="card-text">{{el.year}}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            {% if el.is_available%}
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Забронировать</button>
                             </div>
+                            <small class="text-body-secondary">Доступна</small>
+                            {% else %}
+                            <small class="text-body-secondary">Временно недоступна</small>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-                {% endfor %}
+            </div>
+            {% endfor %}
             {% else %}
-                <p>В библиотеке нет книг</p>
+            <p>В библиотеке нет книг</p>
             {% endif %}
         </div>
     </div>
