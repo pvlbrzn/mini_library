@@ -1,0 +1,25 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Главная страница
+{% endblock %}
+
+
+{% block content %}
+<div class="container py-3">
+    <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+        {% if user.is_authenticated %}
+            <h1 class="display-4 fw-normal text-body-emphasis">Добро пожаловать, {{ user.username }}!</h1>
+            <p class="fs-5 text-body-secondary">Вы вошли в систему.</p>
+            <a href="{% url 'logout' %}" class="btn btn-danger btn-lg mt-4">Выйти</a>
+        {% else %}
+            <h1 class="display-4 fw-normal text-body-emphasis">Добро пожаловать в библиотеку!</h1>
+            <p class="fs-5 text-body-secondary">Пожалуйста, войдите или зарегистрируйтесь, чтобы продолжить.</p>
+            <div class="d-grid gap-2 col-6 mx-auto mt-4">
+            <a href="{% url 'login' %}" class="btn btn-primary btn-lg">Войти</a>
+            <a href="{% url 'register' %}" class="btn btn-secondary btn-lg">Зарегистрироваться</a>
+        </div>
+    {% endif %}
+    </div>
+</div>
+{% endblock %}
