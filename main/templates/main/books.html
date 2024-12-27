@@ -7,24 +7,41 @@
 {% block content %}
 <div class="album py-5 bg-body-tertiary">
     <div class="container">
+        {% if user.is_staff %}
+            <a href="{% url 'add_book' %}" class="btn btn-success mb-3">Добавить книгу</a>
+        {% endif %}
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             {% if books %}
-            {% for el in books %}
+            {% for book in books %}
             <div class="col">
                 <div class="card shadow-sm">
                     <div class="card-body">
-                        <h4 class="card-text">{{el.title}}</h4>
-                        <p class="card-text">{{el.author}}</p>
-                        <p class="card-text">{{el.year}}</p>
-                        <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="card-text">{{book.title}}</h4>
+                        <p class="card-text">{{book.author}}</p>
+                        <p class="card-text">{{book.year}}</p>
+                        <p class="card-text">
+                            <a href="{% url 'book_detail' book.id %}" class="link-body-emphasis text-decoration-none">
+                                Подробнее</a>
+                        </p>
 
-                            {% if el.is_available%}
+                        <div class="d-flex justify-content-between align-items-center">
+                            {% if book.is_available%}
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Забронировать</button>
+                                <a class="me-1 py-1 btn btn-secondary btn-lg"
+                                   href="{% url 'borrow_book' book.id %}">Взять книгу</a>
                             </div>
                             <small class="text-body-secondary">Доступна</small>
                             {% else %}
-                            <small class="text-body-secondary">Временно недоступна</small>
+                            <small class="text-body-secondary">
+                                Взята: {{ book.borrowed_by.get_full_name }} ({{ book.borrowed_by.email }})
+                            </small>
+                            {% if user.is_staff %}
+                            <form action="{% url 'return_book_manager' book.id %}" method="post"
+                                  style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit">Вернуть</button>
+                            </form>
+                            {% endif %}
                             {% endif %}
                         </div>
                     </div>
